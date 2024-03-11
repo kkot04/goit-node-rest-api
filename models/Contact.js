@@ -16,6 +16,17 @@ const contactsSchema = new Schema(
       type: String,
       required: true,
     },
+    avatarUrl: {
+      type: String,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
   },
   { versionKey: false, timestamps: true }
 );
