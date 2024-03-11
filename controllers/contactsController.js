@@ -24,6 +24,7 @@ export const getAllContacts = async (req, res) => {
     total,
     result,
   });
+  
 };
 
 export const getOneContact = async (req, res) => {
@@ -48,6 +49,7 @@ export const deleteContact = async (req, res) => {
     owner,
   });
 
+
   if (!result) {
     throw HttpError(404, `Contact with id=${id} not found`);
   }
@@ -60,6 +62,7 @@ export const deleteContact = async (req, res) => {
 export const createContact = async (req, res) => {
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(contactsDir, filename);
+
 
   await fs.rename(oldPath, newPath);
   const { _id: owner } = req.user;
@@ -80,6 +83,7 @@ export const updateContact = async (req, res) => {
     throw HttpError(400, `Contact with id=${id} not found`);
   }
   const result = await contactsServices.updateContactByFilter(
+
     { _id: id, owner },
     req.body
   );

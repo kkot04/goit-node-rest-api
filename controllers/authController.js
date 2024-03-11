@@ -15,6 +15,7 @@ import * as userServices from "../services/userServices.js";
 
 import ctrlWrapper from "../decorators/ctrWrapper.js";
 
+
 import HttpError from "../helpers/HttpError.js";
 
 const { JWT_SECRET } = process.env;
@@ -38,6 +39,7 @@ const signup = async (req, res) => {
     email: newUser.email,
     subscription: newUser.subscription,
     avatarURL: newUser.avatarURL,
+
   });
 };
 
@@ -54,6 +56,7 @@ const signin = async (req, res) => {
 
   if (!passwordCompare) {
     throw HttpError(401, "Email or password invalid"); // "Password invalid"
+
   }
 
   const payload = {
@@ -66,6 +69,7 @@ const signin = async (req, res) => {
   res.json({
     token,
     user: { email: user.email, subscription: user.subscription },
+
   });
 };
 
@@ -86,6 +90,7 @@ const signout = async (req, res) => {
     message: "Signout success",
   });
 };
+
 
 const updateAvatar = async (req, res) => {
   const { email } = req.user;
@@ -117,4 +122,5 @@ export default {
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
   updateAvatar: ctrlWrapper(updateAvatar),
+
 };

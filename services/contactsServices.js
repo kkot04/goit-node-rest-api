@@ -3,6 +3,7 @@ import Contact from "../models/Contact.js";
 export const listContacts = () => Contact.find();
 
 export const getContactsByFilter = (filter, query = {}) =>
+
   Contact.find(filter, "", query);
 
 export const getContactById = async (contactId) => {
@@ -32,3 +33,4 @@ export const updateContactByFilter = (filter, contactId, body) =>
 export const updateStatus = async (contactId, body) => {
   return Contact.findByIdAndUpdate(contactId, body);
 };
+

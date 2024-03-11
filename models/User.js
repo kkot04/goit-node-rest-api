@@ -19,6 +19,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       minlength: 6,
+
     },
     subscription: {
       type: String,
@@ -30,6 +31,7 @@ const userSchema = new Schema(
     },
     token: {
       type: String,
+
     },
   },
   { versionKey: false, timestamps: true }
