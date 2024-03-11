@@ -1,13 +1,13 @@
 const ctrlWrapper = (ctrl) => {
-    const func = async (req, res, next) => {
-      try {
-        await ctrl(req, res, next);
-      } catch (error) {
-        next(error);
-      }
-    };
-  
-    return func;
+  const func = async (req, res, next) => {
+    try {
+      await ctrl(req, res, next);
+    } catch (error) {
+      next(error);
+    }
   };
-  
-  export default ctrlWrapper;
+
+  return func;
+};
+
+export default ctrlWrapper;
