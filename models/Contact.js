@@ -21,6 +21,9 @@ const contactSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "users",
     },
+    avatarUrl: {
+      type: String,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",

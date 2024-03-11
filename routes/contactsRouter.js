@@ -11,6 +11,8 @@ import upload from "../middlewares/upload.js";
 
 import authenticate from "../middlewares/authenticate.js";
 
+import upload from '../middlewares/upload.js'
+
 const contactsRouter = express.Router();
 
 contactsRouter.use(authenticate);
@@ -21,12 +23,7 @@ contactsRouter.get("/:id", isValidId, contactsControllers.getOneContact);
 
 contactsRouter.delete("/:id", isValidId, contactsControllers.deleteContact);
 
-contactsRouter.post(
-  "/",
-  upload.single("avatarURL"),
-  validateBody(createContactSchema),
-  contactsControllers.createContact
-);
+contactsRouter.post("/", upload.single("avatarUrl"), validateBody(createContactSchema), createContact);
 
 contactsRouter.put(
   "/:id",

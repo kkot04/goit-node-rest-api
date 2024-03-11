@@ -1,4 +1,7 @@
 import fs from "fs/promises";
+import path from "path";
+
+import * as contactsService from "../services/contactsServices.js";
 
 import path from "path";
 
@@ -7,6 +10,9 @@ import * as contactsServices from "../services/contactsServices.js";
 import ctrlWrapper from "../decorators/ctrWrapper.js";
 
 import HttpError from "../helpers/HttpError.js";
+
+// const avatarsDir = path.resolve("public", "avatars");
+const contactsDir = path.resolve("public", "contacts");
 
 export const getAllContacts = async (req, res) => {
   const { _id: owner } = req.user;
@@ -18,13 +24,8 @@ export const getAllContacts = async (req, res) => {
     { owner },
     { skip, limit }
   );
-
-  const total = await contactsServices.getContactsCountByFilter({ owner });
-  res.json({
-    total,
-    result,
-  });
-  
+  const total = await contactsService.getContactsCountByFilter({ owner });
+  res.json({ total, result });
 };
 
 export const getOneContact = async (req, res) => {
@@ -60,8 +61,19 @@ export const deleteContact = async (req, res) => {
 };
 
 export const createContact = async (req, res) => {
+  const { _id: owner } = req.user;
+
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(contactsDir, filename);
+  await fs.rename(oldPath, newPath);
+
+  const avatarUrl = path.join("contacts", filename);
+
+  const result = await contactsService.addContact({
+    ...req.body,
+    avatarUrl,
+    owner,
+  });
 
 
   await fs.rename(oldPath, newPath);
@@ -74,6 +86,7 @@ export const createContact = async (req, res) => {
   });
   res.status(201).json(result);
 };
+
 
 export const updateContact = async (req, res) => {
   const { id } = req.params;
