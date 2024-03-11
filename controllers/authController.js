@@ -4,14 +4,17 @@ import gravatar from "gravatar";
 import jimp from "jimp";
 
 import bcrypt from "bcrypt";
+
 import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
 import "dotenv/config.js";
 
-import * as authServices from "../services/authServices.js";
+import * as authServices from "../services/authSevices.js";
+
 import * as userServices from "../services/userServices.js";
 
-import ctrlWrapper from "../decorators/ctrlWrapper.js";
+import ctrlWrapper from "../decorators/ctrWrapper.js";
+
 
 import HttpError from "../helpers/HttpError.js";
 import sendEmail from "../helpers/SendEmail.js";
@@ -20,11 +23,12 @@ const avatarsDir = path.resolve("public", "avatars");
 
 const { JWT_SECRET, BASE_URL } = process.env;
 
+
 const signup = async (req, res) => {
   const { email } = req.body;
   const user = await userServices.findUser({ email });
   if (user) {
-    throw HttpError(409, "Email in use");
+    throw HttpError(409, "Email already in use");
   }
 
   const verificationToken = nanoid();
@@ -92,16 +96,20 @@ const resendVerifyEmail = async (req, res) => {
 
 const signin = async (req, res) => {
   const { email, password } = req.body;
+
   const user = await userServices.findUser({ email });
+
   if (!user) {
-    throw HttpError(401, "Email or password is wrong");
+    throw HttpError(401, "Email or password invalid"); // "Email invalid"
   }
   if (!user.verify) {
     throw HttpError(401, "Email is not verified");
   }
   const passwordCompare = await bcrypt.compare(password, user.password);
+
   if (!passwordCompare) {
-    throw HttpError(401, "Email or password is wrong");
+    throw HttpError(401, "Email or password invalid"); // "Password invalid"
+
   }
 
   const payload = {
