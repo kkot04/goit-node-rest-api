@@ -16,6 +16,14 @@ const contactsSchema = new Schema(
       type: String,
       required: true,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
   },
   { versionKey: false, timestamps: true }
 );
