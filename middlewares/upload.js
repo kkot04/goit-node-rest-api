@@ -7,10 +7,10 @@ const destination = path.resolve("temp");
 
 const storage = multer.diskStorage({
   destination,
-  filename: (req, file, cb) => {
+  filename: (req, file, callback) => {
     const uniquePrefix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const filename = `${uniquePrefix}-${file.originalname}`;
-    cb(null, filename);
+    callback(null, filename);
   },
 });
 
@@ -18,12 +18,12 @@ const limits = {
   fileSize: 1024 * 1024 * 5,
 };
 
-const fileFilter = (req, file, cb) => {
-  const extension = file.originalname.split(".").pop();
-  if (extension == "exe") {
-    return cb(HttpError(400, ".exe extension is not allowed"));
+const fileFilter = (req, file, callback) => {
+  const extenstion = file.originalname.split(".").pop();
+  if (extenstion === "exe") {
+    return callback(HttpError(400, ".exe extension not allow"));
   }
-  cb(null, true);
+  callback(null, true);
 };
 
 const upload = multer({
